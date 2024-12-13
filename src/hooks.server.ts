@@ -15,15 +15,18 @@ export const handle:Handle = async ({event, resolve}) => {
     where: eq(schema.user.userAuthToken,session),
     columns:{
       username:true,
-      roleId:true
+      roleId:true,
+      id:true
     }
   })
 
   if (user){
     event.locals.user = {
       name:user.username,
-      roleId:user.roleId
+      roleId:user.roleId,
+      id:user.id
     }
+
   }
   return await resolve(event)
 }

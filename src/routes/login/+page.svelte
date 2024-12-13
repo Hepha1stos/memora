@@ -17,7 +17,7 @@
     setTimeout(() => {
       showMessage = false;
     },2500)
-  }
+  };
 
   export let form: ActionData;
 </script>

@@ -1,27 +1,56 @@
-import { pgTable, varchar, integer, serial, timestamp, foreignKey } from 'drizzle-orm/pg-core';
+// Importiere Drizzle-Module
+import { pgTable, varchar, serial, timestamp, integer, foreignKey,unique } from 'drizzle-orm/pg-core';
+
+// PostgreSQL Schemas
 
 // Roles table
 export const roles = pgTable('roles', {
-  id: serial('id').primaryKey().notNull(),
-  name: varchar('name', { length: 255 }).notNull().unique(),
+    id: serial('id').primaryKey().notNull(),
+    name: varchar('name', { length: 255 }).notNull().unique(),
 });
 
 // User table
 export const user = pgTable('user', {
-  id: varchar('id').primaryKey().notNull(),
-  username: varchar('username', { length: 255 }).notNull().unique(),
-  passwordHash: varchar('password_hash', { length: 255 }).notNull(),
-  email:varchar('email',{length:255}).notNull(),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-  userAuthToken: varchar('user_auth_token', { length: 255 }).notNull().unique(),
-  updatedAt: timestamp('updated_at').notNull().defaultNow(),
-  roleId: integer('role_id').notNull(),
+    id: varchar('id').primaryKey().notNull(),
+    username: varchar('username', { length: 255 }).notNull().unique(),
+    passwordHash: varchar('password_hash', { length: 255 }).notNull(),
+    email: varchar('email', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    userAuthToken: varchar('user_auth_token', { length: 255 }).notNull().unique(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
+    roleId: integer('role_id').notNull(),
 }, (table) => ({
-  roleForeignKey: foreignKey({
-    columns: [table.roleId],
-    foreignColumns: [roles.id],
-  }),
+    roleForeignKey: foreignKey({
+        columns: [table.roleId],
+        foreignColumns: [roles.id],
+    }),
 }));
 
-export const schema = { user, roles };
+// Category Schema
+export const category = pgTable("category", {
+  id: serial("id").primaryKey().notNull(),
+  name: varchar("name", { length: 30 }).notNull(),
+  studyCount: integer("study_count").notNull().default(0),
+  user_id: varchar("user_id").notNull().references(() => user.id),
+}, (table) => {
+  return {
+      userIdNameUnique: unique().on(table.user_id, table.name)
+  };
+});
+
+// Flashcard Schema
+export const flashcard = pgTable("flashcard", {
+    id: serial("id").primaryKey().notNull(),
+    question: varchar("question", { length: 255 }).notNull(),
+    answer: varchar("answer", { length: 255 }).notNull(),
+    category_id: integer("category_id").notNull().references(() => category.id),
+    created_at: timestamp("created_at").defaultNow(),
+    updated_at: timestamp("updated_at").defaultNow(),
+    num_correct: integer("num_correct").default(0),
+    num_wrong: integer("num_wrong").default(0),
+    user_id: varchar("user_id").notNull().references(() => user.id),
+});
+
+export const schema = { roles, user, category, flashcard };
+
 export type user = typeof user.$inferSelect
