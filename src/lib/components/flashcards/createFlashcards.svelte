@@ -15,39 +15,30 @@
 
 	import { loadAllCategories } from "$lib/funcs/api/handleAPI";
 	import { categoryStore } from "$lib/stores/categoryStore";
+	import { flashcardStore } from "$lib/stores/flashcardStore";
  
   import {Input, Button, Heading,Helper, Select  } from "flowbite-svelte"
   import {Toast} from "flowbite-svelte";
   import {CheckCircleSolid, ExclamationCircleSolid} from "flowbite-svelte-icons";
-	import { onMount } from "svelte";
 
   export let user: { name: string; roleId: number; id: string } | null;
-
-  let data:ApiResponse = {
-    error:false,
-    message: "",
-    data:[]
-  };
 
   let selected:number = 0;
   let question:string;
   let answer:string; 
   let error:boolean = false;
   let errorMsg:string;
+  let categories:[{id:number,name:string, studyCount:number,user_id:string}];
 
-  onMount(async ()=>{
-    const response = await loadAllCategories();
-    categoryStore.set(response)
+  $: console.log(selected)
 
-    // category_id muss den key 'value' haben -> jedes Kategoryobjekt wird mit Map antsprechend abgeändert
-    data = {
-        ...response,
-        data: response.data.map((category: { id: any; }) => ({
-          ...category,
-          value: category.id 
-        }))
-      };
-  })
+    // Abonniere den categoryStore und aktualisiere die Kategorien
+  categoryStore.subscribe((storeCategories) => {
+    categories = storeCategories.map((category: Category) => ({
+      ...category,
+      value: category.id, // Den 'value'-Key hinzufügen
+    }));
+  });
 
   async function handleSubmit(){
     const response = await fetch('/api/flashcard/create',{
@@ -62,6 +53,7 @@
       answer = ""
       error = res.error
       errorMsg = res.message
+      flashcardStore.update((flashcards) => [...flashcards, res.newFlashcards]);
     }
 }
 
@@ -69,7 +61,7 @@
 
 <Heading tag="h4" class="text-center text-lg font-semibold mb-4">Create a new Flashcard</Heading>
 
-<p class="text-gray-600 text-sm mb-2 text-wrap">
+<p class="text-gray-600 text-sm font-medium mb-2 text-wrap">
   Create a new flashcard by entering your question and answer, and start learning right away
 </p>
 <form on:submit={handleSubmit} class="flex flex-col">
@@ -78,7 +70,7 @@
     <Helper id="name-helper" class="mb-2">Choose a reasonable Question</Helper>
     <Input type="text" id="answer" name="answer" placeholder="Enter the Answer..." required bind:value={answer}/>
     <Helper id="name-helper"  class="mb-2">Do not forget the correct Answer</Helper>
-    <Select items={data.data} bind:value={selected}/>
+    <Select items={categories} bind:value={selected}/>
     <Helper id="name-helper"  class="mb-2">Select a proper Category</Helper>
     <Button type="submit" class="mt-4 w-full">Create Flashcard</Button>
   </div>

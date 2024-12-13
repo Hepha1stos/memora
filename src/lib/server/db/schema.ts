@@ -40,15 +40,17 @@ export const category = pgTable("category", {
 
 // Flashcard Schema
 export const flashcard = pgTable("flashcard", {
-    id: serial("id").primaryKey().notNull(),
-    question: varchar("question", { length: 255 }).notNull(),
-    answer: varchar("answer", { length: 255 }).notNull(),
-    category_id: integer("category_id").notNull().references(() => category.id),
-    created_at: timestamp("created_at").defaultNow(),
-    updated_at: timestamp("updated_at").defaultNow(),
-    num_correct: integer("num_correct").default(0),
-    num_wrong: integer("num_wrong").default(0),
-    user_id: varchar("user_id").notNull().references(() => user.id),
+  id: serial("id").primaryKey().notNull(),
+  question: varchar("question", { length: 255 }).notNull(),
+  answer: varchar("answer", { length: 255 }).notNull(),
+  category_id: integer("category_id")
+      .notNull()
+      .references(() => category.id, { onDelete: "cascade" }), // Cascading Delete
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+  num_correct: integer("num_correct").default(0),
+  num_wrong: integer("num_wrong").default(0),
+  user_id: varchar("user_id").notNull().references(() => user.id),
 });
 
 export const schema = { roles, user, category, flashcard };

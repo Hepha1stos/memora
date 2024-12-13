@@ -1,8 +1,11 @@
 <script lang="ts">
+	
 
   import {Input, Button, Heading,Helper } from "flowbite-svelte"
   import {Toast} from "flowbite-svelte";
   import {CheckCircleSolid, ExclamationCircleSolid} from "flowbite-svelte-icons";
+  import { categoryStore } from "$lib/stores/categoryStore";
+
 
   export let user: { name: string; roleId: number; id: string } | null;
 
@@ -21,13 +24,14 @@
       error = res.error;
       successMsg = res.message
       categoryName = "";
+      categoryStore.update((categories) => [...categories, res.newCategory]);
     }
   };
 
 </script>
 <Heading tag="h4" class="text-center text-lg font-semibold mb-4">Create a new Category</Heading>
 
-<p class="text-gray-600 text-sm mb-6 text-wrap">
+<p class="text-gray-600 text-sm mb-6 text-wrap text-sm font-medium">
   Organize your Flashcards better by creating a new category!
 </p>
 <form on:submit={handleSubmit} class="flex flex-col">

@@ -11,14 +11,14 @@
     showMessage = true;
     setTimeout(() => {
       showMessage = false;
-    },2500)
+    },2500);
   };
 </script>
 
 <div class="flex h-screen w-full items-center justify-center bg-slate-200">
 	<form
 		method="POST"
-		action="?/register"  on:submit|preventDefault
+		action="?/register"
 		class="flex w-1/3 flex-col rounded-lg bg-white p-9 shadow-lg"
 	>
 		<Heading tag="h3" class="mb-4">Register</Heading>
