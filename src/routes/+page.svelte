@@ -27,7 +27,6 @@
     categoryStore.set(response.data);
 
     const flashcards = await loadAllFlashcards();
-    console.log(flashcards)
     flashcardStore.set(flashcards.data);
   })
   

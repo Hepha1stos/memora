@@ -30,7 +30,6 @@
   let errorMsg:string;
   let categories:[{id:number,name:string, studyCount:number,user_id:string}];
 
-  $: console.log(selected)
 
     // Abonniere den categoryStore und aktualisiere die Kategorien
   categoryStore.subscribe((storeCategories) => {
