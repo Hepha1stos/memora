@@ -9,6 +9,7 @@ interface Flashcard {
   updated_at:Date;
   num_correct:number;
   num_wrong:number;
+  user_id:string;
 }
 
 export const flashcardStore = writable<Flashcard[]>([]);

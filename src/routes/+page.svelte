@@ -14,6 +14,7 @@
   import CreateFlashcards from "$lib/components/flashcards/createFlashcards.svelte";
   import CountStatistics from "$lib/components/statistics/countStatistics.svelte";
   import Learn from "$lib/components/learn/learn.svelte";
+  import EditCategory from "$lib/components/categories/editCategory.svelte";
 
   // import other stuff
 	import { onMount } from "svelte";
@@ -50,7 +51,7 @@
 	><Learn/></div>
 	<div
 		class="col-span-3 col-start-1 row-span-2 row-start-3 rounded-md bg-[#FAF9F6] p-3 md:col-span-1 md:col-start-4 md:row-span-3 md:row-start-2"
-	></div>
+	><EditCategory/></div>
 	<div
 		class="col-span-3 col-start-1 row-span-2 row-start-5 rounded-md bg-[#FAF9F6] p-3 md:col-span-1 md:col-start-3 md:row-span-3 md:row-start-2"
 	></div>
