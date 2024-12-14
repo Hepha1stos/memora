@@ -13,20 +13,24 @@
   let error:boolean = false;
   let successMsg:string;
 
-  async function handleSubmit(){
+  async function handleSubmit(event:Event){
+    event.preventDefault()
     const response = await fetch("/api/category/create", {
       method:"POST",
       body:JSON.stringify({user:user, data:categoryName})
     })
     const res = await response.json()
 
-    if (response.ok){
+    if (res){
       error = res.error;
       successMsg = res.message
       categoryName = "";
       categoryStore.update((categories) => [...categories, res.newCategory]);
-      window.location.reload()
+      setTimeout(() => {
+      window.location.reload();
+    }, 1000);
     }
+    
   };
 
 </script>

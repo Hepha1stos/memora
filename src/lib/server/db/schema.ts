@@ -62,6 +62,7 @@ export const learnSession = pgTable("learnSession",{
   data:jsonb("data").notNull(),
   total_correct: integer("total_correct").notNull(),
   total_wrong: integer("total_wrong").notNull(),
+  user_id: varchar("user_id").notNull().references(() => user.id)
 })
 
 export const schema = { roles, user, category, flashcard,learnSession };

@@ -54,6 +54,7 @@
       errorMsg = res.message
       flashcardStore.update((flashcards) => [...flashcards, res.newFlashcards]);
     }
+    window.location.reload()
 }
 
 </script>
