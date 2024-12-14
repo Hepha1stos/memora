@@ -1,5 +1,5 @@
 // Importiere Drizzle-Module
-import { pgTable, varchar, serial, timestamp, integer, foreignKey,unique } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, serial, timestamp, integer, foreignKey,unique, jsonb } from 'drizzle-orm/pg-core';
 
 // PostgreSQL Schemas
 
@@ -53,6 +53,17 @@ export const flashcard = pgTable("flashcard", {
   user_id: varchar("user_id").notNull().references(() => user.id),
 });
 
-export const schema = { roles, user, category, flashcard };
+
+// learnSession Schema
+export const learnSession = pgTable("learnSession",{
+  id: serial('id').primaryKey().notNull(),
+  category_id : integer("category_id").notNull().references(() => category.id, {onDelete:"cascade"}),
+  date:timestamp("date").defaultNow(),
+  data:jsonb("data").notNull(),
+  total_correct: integer("total_correct").notNull(),
+  total_wrong: integer("total_wrong").notNull(),
+})
+
+export const schema = { roles, user, category, flashcard,learnSession };
 
 export type user = typeof user.$inferSelect

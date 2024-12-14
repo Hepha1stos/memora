@@ -42,7 +42,7 @@
 	<div class="flex h-1/2 w-1/2 flex-col items-center rounded-lg bg-white p-8 shadow-lg">
 		{#if start}
 			<Heading tag="h4" class="mb-1 text-center text-lg font-semibold">Learn Session</Heading>
-			<SessionActive {pickedCategoryId} />
+			<SessionActive {pickedCategoryId} {isSessionOpen}/>
 		{:else}
 			<Heading tag="h4" class="mb-1 text-center text-lg font-semibold">Learning Session</Heading>
 			<form class="mx-auto max-w-sm">

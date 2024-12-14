@@ -1,18 +1,23 @@
 <script lang="ts">
 	import { flashcardStore } from "$lib/stores/flashcardStore";
-	import { Button } from "flowbite-svelte";
+	import { Button,Alert } from "flowbite-svelte";
 	import { onMount } from "svelte";
 	import { get } from "svelte/store";
+  import {type Writable} from "svelte/store";
 
   let flashcards = [];
   let cardIndex:number = 0;
   let answer:boolean = false;
   let correctAnswers:number;
   let wrongAnswers:number;
+  let sessionEnds:boolean = false;
+  let evalu:boolean = true;
+
 
   let sessionAnswers: { flashcardId: number; answered: boolean }[] = [];
 
   export let pickedCategoryId:number;
+  export let isSessionOpen:Writable<boolean>;
 
   onMount(() => {
     flashcards = get(flashcardStore).filter((flashcard) => {
@@ -38,6 +43,7 @@
   }
 
   function evaluate(){
+    evalu = true
     correctAnswers =0;
     wrongAnswers =0 ;
 
@@ -50,6 +56,16 @@
     evaluate()
   }
 
+  async function endSession(){
+    let body ={category_id:pickedCategoryId, total_correct:correctAnswers, total_wrong: wrongAnswers, data:sessionAnswers}
+
+    const response = await fetch("/api/learnSession/create",{
+      method:'POST',
+      body:JSON.stringify(body)
+    })
+    sessionEnds = true;
+  }
+ 
 </script>
 
 {#if flashcards.length > 0}
@@ -67,7 +83,7 @@
 
       {#if !answer}
         <Button type="button" class="w-full mt-8" on:click={()=>{answer = true}}>Answer</Button>
-      {:else}
+      {:else if answer}
         <Button type="button" color="green" class="w-full mt-4 mb-4" on:click={handleKnown}>Known</Button>
         <Button type="button" color="red" class="w-full" on:click={handleNotKnown}>Not Known</Button>
       {/if}
@@ -82,8 +98,29 @@
         Wrong answers: {wrongAnswers}
       </div>
     </div>
-    <Button type="button" color="green" class="w-1/2 mt-4">End Session</Button> <!--todo-->
+    <Button type="button" color="green" class="w-1/2 mt-4" on:click={endSession}>End Session</Button> <!--todo-->
    {/if}
 {:else}
    <p>Keine Flashcards gefunden</p>
 {/if}
+
+{#if sessionEnds}
+			<div class="z-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+				<div class="w-1/3 rounded-lg  p-6 text-center">
+					<Alert class="text-left" color="green">
+						<span class="font-medium">Success!</span> The running Session is succsessfully saved!
+						Continue?
+						<div class="mt-4 flex justify-between">
+							<Button
+								type="button"
+								color="green"
+								class="w-1/3"
+                on:click={() => {isSessionOpen.set(false)}}
+							>
+								Ok
+							</Button>
+						</div>
+					</Alert>
+				</div>
+			</div>
+		{/if}

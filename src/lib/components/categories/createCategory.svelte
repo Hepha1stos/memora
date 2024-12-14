@@ -25,6 +25,7 @@
       successMsg = res.message
       categoryName = "";
       categoryStore.update((categories) => [...categories, res.newCategory]);
+      window.location.reload()
     }
   };
 
