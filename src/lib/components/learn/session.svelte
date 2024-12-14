@@ -3,6 +3,7 @@
 	import { flashcardStore } from '$lib/stores/flashcardStore';
 
 	import { Button, Heading, Alert } from 'flowbite-svelte';
+  import {InfoCircleSolid} from "flowbite-svelte-icons"
 	import { get, type Writable } from 'svelte/store';
 	import SessionActive from './sessionActive.svelte';
 
@@ -95,6 +96,7 @@
 			<div class="z-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 				<div class="w-1/3 rounded-lg  p-6 text-center">
 					<Alert class="text-left">
+            <InfoCircleSolid slot="icon" class="w-5 h-5" />
 						<span class="font-medium">Attention!</span> The running Session will not be saved!
 						Continue?
 						<div class="mt-4 flex justify-between">
@@ -130,6 +132,7 @@
 			<div class="z-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 				<div class="w-1/3 rounded-lg p-6 text-center">
 					<Alert class="text-left">
+            <InfoCircleSolid slot="icon" class="w-5 h-5" />
 						<span class="font-medium">Attention!</span> The running Session will not be saved!
 						Continue?
 						<div class="mt-4 flex justify-between">

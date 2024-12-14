@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { flashcardStore } from "$lib/stores/flashcardStore";
-	import { Button,Alert } from "flowbite-svelte";
+	import { Button,Alert  } from "flowbite-svelte";
+  import {InfoCircleSolid} from "flowbite-svelte-icons"
 	import { onMount } from "svelte";
 	import { get } from "svelte/store";
   import {type Writable} from "svelte/store";
 
-  let flashcards = [];
+  let flashcards: string | any[] = [];
   let cardIndex:number = 0;
   let answer:boolean = false;
   let correctAnswers:number;
@@ -21,6 +22,7 @@
 
   onMount(() => {
     flashcards = get(flashcardStore).filter((flashcard) => {
+      //@ts-ignore
       return flashcard.category_id === pickedCategoryId;
     });
   });
@@ -32,7 +34,7 @@
     answer = false
     sessionAnswers.push({flashcardId:flashcards[cardIndex].id, answered:true})
     cardIndex += 1;
-    // UPDATE flashcard
+ 
   }
 
   function handleNotKnown(){
@@ -63,7 +65,11 @@
       method:'POST',
       body:JSON.stringify(body)
     })
-    sessionEnds = true;
+    // response returns a json containing error (false if no error is occuring)
+    if(!response.error){
+      sessionEnds = true;
+    }
+    
   }
  
 </script>
@@ -107,10 +113,10 @@
 {#if sessionEnds}
 			<div class="z-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 				<div class="w-1/3 rounded-lg  p-6 text-center">
-					<Alert class="text-left" color="green">
+					<Alert class="flex- justify-between" color="green">
 						<span class="font-medium">Success!</span> The running Session is succsessfully saved!
 						Continue?
-						<div class="mt-4 flex justify-between">
+						<div class="mt-4 flex justify-center">
 							<Button
 								type="button"
 								color="green"
@@ -123,4 +129,4 @@
 					</Alert>
 				</div>
 			</div>
-		{/if}
+{/if}
