@@ -11,6 +11,6 @@
   >
     <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
       More awesome statistics
-      <Button type="button" class="w-full" on:click={() => (openStatistics = false)}>Close</Button>
+      <Button type="button" color="alternative" class="w-full" on:click={() => (openStatistics = false)}>Close</Button>
     </div>
   </div>

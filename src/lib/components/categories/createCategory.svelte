@@ -37,7 +37,7 @@
 <form on:submit={handleSubmit} class="flex flex-col">
   <div>
     <Input type="text" id="name" name="name" class="mt-4" bind:value={categoryName} placeholder="Enter the Categoryname" required />
-    <Helper id="name-helper" class="mb-[6.6rem]">Choose a unique and descriptive name</Helper>
+    <Helper id="name-helper">Choose a unique and descriptive name</Helper>
     <Button type="submit" class="mt-4 w-full">Create Category</Button>
   </div>
 </form>
