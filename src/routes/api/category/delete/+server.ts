@@ -7,25 +7,13 @@ import type { RequestEvent } from "@sveltejs/kit";
 
 export async function DELETE({ request, locals }: RequestEvent) {
   try {
-    // Hole die Daten aus der Anfrage
     const data = await request.json();
 
-    // Debugging: Logge die empfangenen Daten
-    console.log("Received Data:", data);
-
-    // Debugging: Prüfe, ob user.id vorhanden ist
-    console.log("User ID:", locals.user?.id);
-
-    // Führe die DELETE-Anfrage aus
     const result = await db
       .delete(category)
       .where(and(eq(category.id, data.id), eq(category.user_id, locals.user.id)))
       .returning();
 
-    // Debugging: Logge das Ergebnis der DELETE-Operation
-    console.log("Delete Result:", result);
-
-    // Überprüfe, ob etwas gelöscht wurde
     if (result.length === 0) {
       return json({
         error: true,

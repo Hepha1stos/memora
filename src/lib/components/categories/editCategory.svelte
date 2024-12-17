@@ -114,7 +114,7 @@
 {/if}
 
 {#if checkDelete}
-<div class="z-60 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+<div class="z-[9999] fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
 	<div class="w-1/3 rounded-lg p-6 text-center">
 		<Alert class="text-left">
 			<InfoCircleSolid slot="icon" class="w-5 h-5" />
