@@ -81,9 +81,9 @@
 	Click <i>Edit</i> to change the Name of a Category or <i>Delete</i> to delete a Category and its Flashcards.
 </p>
 
-<div class="relative text-center overflow-auto h-[34rem] border-2 rounded-lg">
+<div class="relative text-center overflow-auto h-[34rem] border-2 rounded-lg mt-4 p-4">
 	{#each categories as cat}
-	<div class="mb-4">
+	<div class="mb-4 p-2 border rounded-lg shadow-sm hover:shadow-2xl duration-300 ease-in-out">
 		<p class="font-semibold">{cat.name}</p>
 		<p class="text-gray-600 text-sm">Flashcards: {flashcards.filter(f => f.category_id === cat.id).length}</p>
 		<div class="mt-2 flex justify-center gap-2">
@@ -100,7 +100,6 @@
 				on:click={() => { check(cat); }}
 			>Delete</Button>
 		</div>
-		<hr class="mt-3" />
 	</div>
 	{/each}
 </div>

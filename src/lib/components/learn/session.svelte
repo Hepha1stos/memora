@@ -40,7 +40,7 @@
 </script>
 
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-	<div class="flex h-1/2 w-1/2 flex-col items-center rounded-lg bg-white p-8 shadow-lg">
+	<div class="flex h-[45rem] w-1/2 flex-col items-center rounded-lg bg-white p-8 shadow-lg">
 		{#if start}
 			<Heading tag="h4" class="mb-1 text-center text-lg font-semibold">Learn Session</Heading>
 			<SessionActive {pickedCategoryId} {isSessionOpen}/>

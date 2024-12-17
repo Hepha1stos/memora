@@ -1,77 +1,99 @@
 <script lang="ts">
-	import { categoryStore } from '$lib/stores/categoryStore';
-	import { flashcardStore } from '$lib/stores/flashcardStore';
+  import { categoryStore } from "$lib/stores/categoryStore";
+  import { flashcardStore } from "$lib/stores/flashcardStore";
+  import { get } from "svelte/store";
+  import { Button, Heading } from "flowbite-svelte";
 
-	import { Heading, Button, Alert } from 'flowbite-svelte';
-	import { InfoCircleSolid } from 'flowbite-svelte-icons';
+  let categories: Array<any> = [];
+  let flashcards: Array<any> = [];
+  let pickedCategoryId: number = 0;
+  let flashcardsToEdit: Array<any> = [];
 
-	let categories: Array<any>;
-	let flashcards: Array<any>;
-	let pickedCategoryId: number;
-  let flashcardsToEdit:Array<any> = []
+  // Kategorien abonnieren
+  $: categoryStore.subscribe((value) => {
+    categories = value;
+  });
 
-	$: categoryStore.subscribe((value) => {
-		categories = value;
-	});
+  // Flashcards abonnieren
+  $: flashcardStore.subscribe((value) => {
+    flashcards = value;
+  });
 
-	$: flashcardStore.subscribe((value) => {
-		flashcards = value;
-	});
-
-  function loadFlashcards(){
-    flashcardsToEdit = flashcards.filter((card)=> card.category_id === pickedCategoryId)
+  // Reaktivität erzwingen bei Änderung
+  $: if (pickedCategoryId) {
+    flashcardsToEdit = flashcards.filter(
+      (card) => card.category_id === pickedCategoryId
+    );
   }
 
-  function formatTime(time:string){
-    let formattedTime:string ="";
-    let temp:Array<string>  = time.split("T")[0].split("-")
-    let year = temp[0]
-    let month = temp[1]
-    let day = temp[2]
-    return formattedTime = `${day}.${month}.${year}`
+  async function deleteFlashcard(card) {
+    try {
+      const response = await fetch("/api/flashcard/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: card.id })
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete flashcard: ${response.statusText}`);
+      }
+
+      // Aktualisiere flashcardStore
+      flashcardStore.update((flashcards) =>
+        flashcards.filter((flashcard) => flashcard.id !== card.id)
+      );
+
+      // Erzwinge manuelle Aktualisierung
+      flashcards = get(flashcardStore);
+      flashcardsToEdit = flashcards.filter(
+        (f) => f.category_id === pickedCategoryId
+      );
+    } catch (error) {
+      console.error(`Error deleting flashcard: ${error}`);
+    }
   }
 
-
-  async function deleteFlashcard(){
-    //body must have format: {id:1,flashcard:{question:"bababa"}}
-
-
+  function formatTime(time: string) {
+    const [year, month, day] = time.split("T")[0].split("-");
+    return `${day}.${month}.${year}`;
   }
 </script>
 
-<Heading tag="h4" class=" text-center text-lg font-semibold">Edit Flashcards</Heading>
-<p class="mb-2 text-wrap text-sm text-sm font-medium text-gray-600">
-	Select a Category and click <i>Edit</i> to change the Questions/Answers of a Flashcard or
-	<i>Delete</i> to delete a Flashcard.
+<Heading tag="h4" class="text-center text-lg font-semibold mb-4">Edit Flashcards</Heading>
+
+<p class="mb-2 text-wrap text-sm text-gray-600 font-medium">
+  Select a Category and click <i>Edit</i> to change the Questions/Answers of a Flashcard or
+  <i>Delete</i> to delete a Flashcard.
 </p>
 
+<!-- Kategorien-Auswahl -->
 <select
-	id="categories"
-	class="focus:border-teal block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none z-1"
-	bind:value={pickedCategoryId}
-  on:change={loadFlashcards}
+  id="categories"
+  class="focus:border-teal block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none"
+  bind:value={pickedCategoryId}
 >
-	<option selected>Select a Category</option>
-	{#each categories as c}
-		<option value={c.id}>{c.name}</option>
-	{/each}
-</select>
-<div class="relative text-center overflow-auto h-[32rem] border-2 rounded-lg">
-  {#if pickedCategoryId === "Select a Category" }
-  Please select a Category
-  {:else if flashcardsToEdit.length <= 0}
-    <p>This Category has no Flashcards</p>
-{/if}
-  {#each flashcardsToEdit as card}
-    <div class="mb-2 border-1 gap-2">
-     <p class="font-semibold">Question:{card.question}</p>
-     <p class="font-semibold">Answer: {card.answer}</p>
-     <p class="">Created at: {formatTime(card.created_at)}</p>
-     <p class="">Updatet at: {formatTime(card.updated_at)}</p>
-     <Button type="button" size="xs" color="alternative" class="">Edit</Button>
-     <Button type="button" size="xs" color="red" class="">Delete</Button>
-     <hr class="mt-3" />
-    </div>
+  <option value="0" selected>Select a Category</option>
+  {#each categories as c}
+    <option value={c.id}>{c.name}</option>
   {/each}
+</select>
 
+<!-- Flashcards anzeigen -->
+<div class="relative text-center overflow-auto h-[32rem] border-2 rounded-lg mt-4 p-4">
+  {#if pickedCategoryId === 0}
+    <p class="text-gray-500">Please select a Category</p>
+  {:else if flashcardsToEdit.length <= 0}
+    <p class="text-gray-500">This Category has no Flashcards</p>
+  {/if}
+
+  {#each flashcardsToEdit as card}
+  <div class="mb-4 p-2 border rounded-lg shadow-sm hover:shadow-2xl duration-300 ease-in-out">
+    <p class="font-semibold">Question: {card.question}</p>
+    <p class="font-semibold">Answer: {card.answer}</p>
+    <div class="flex justify-center mt-2">
+      <Button type="button" size="xs" color="alternative">Edit</Button>
+      <Button type="button" size="xs" color="red" class="ml-2" on:click={() => deleteFlashcard(card)}>Delete</Button>
+    </div>
+  </div>
+  {/each}
 </div>

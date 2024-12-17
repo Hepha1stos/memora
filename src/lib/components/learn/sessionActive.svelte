@@ -168,17 +168,19 @@ function shuffleAndSortFlashcards(flashcards) {
 {#if flashcards.length > 0}
 	{#if cardIndex < flashcards.length}
 		<div
-			class="flex h-1/6 w-full items-center justify-center rounded-lg border-4 bg-slate-200 text-center duration-300 ease-in-out hover:shadow-2xl"
+			class="flex h-1/3 w-full items-center justify-center rounded-lg border-4 bg-slate-200 text-center duration-300 ease-in-out hover:shadow-2xl"
 		>
 			<p>{flashcards[cardIndex].question}</p>
 		</div>
-		<div
-			class="border-1 mt-2 flex h-1/6 w-full items-center justify-center rounded-lg bg-slate-100 text-center duration-300 ease-in-out hover:shadow-2xl"
-		>
+		
 			{#if answer}
+      <div
+			class="border-1 mt-2 flex h-1/3 w-full items-center justify-center rounded-lg bg-slate-100 text-center duration-300 ease-in-out hover:shadow-2xl"
+		>
 				<p>{flashcards[cardIndex].answer}</p>
+      </div>
 			{/if}
-		</div>
+		
 		{#if !answer}
 			<Button
 				type="button"
