@@ -45,7 +45,7 @@ export const flashcard = pgTable("flashcard", {
   answer: varchar("answer", { length: 255 }).notNull(),
   category_id: integer("category_id")
       .notNull()
-      .references(() => category.id, { onDelete: "cascade" }), // Cascading Delete
+      .references(() => category.id, { onDelete: "cascade" }), 
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
   num_correct: integer("num_correct").default(0),
