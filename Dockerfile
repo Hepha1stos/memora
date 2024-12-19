@@ -18,5 +18,4 @@ EXPOSE 3000
 
 ENV NODE_ENV=production
 
-# Migrationen durchführen und den Server starten
 CMD ["node","build"]
