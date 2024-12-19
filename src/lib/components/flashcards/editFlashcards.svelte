@@ -1,7 +1,7 @@
 <script lang="ts">
   import { categoryStore } from "$lib/stores/categoryStore";
   import { flashcardStore } from "$lib/stores/flashcardStore";
-  import { get } from "svelte/store";
+  import { get,writable } from "svelte/store";
   import { Button, Heading } from "flowbite-svelte";
 
   let categories: Array<any> = [];
