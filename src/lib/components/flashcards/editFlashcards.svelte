@@ -1,14 +1,18 @@
 <script lang="ts">
   import { categoryStore } from "$lib/stores/categoryStore";
   import { flashcardStore } from "$lib/stores/flashcardStore";
-  import { get } from "svelte/store";
+  import { get,writable } from "svelte/store";
   import { Button, Heading } from "flowbite-svelte";
+
+  import ActiveEdit from "./activeEdit.svelte"
 
   let categories: Array<any> = [];
   let flashcards: Array<any> = [];
   let pickedCategoryId: number = 0;
   let flashcardsToEdit: Array<any> = [];
+  let pickedCard;
 
+  let openEdit = writable(false);
   // Kategorien abonnieren
   $: categoryStore.subscribe((value) => {
     categories = value;
@@ -24,6 +28,11 @@
     flashcardsToEdit = flashcards.filter(
       (card) => card.category_id === pickedCategoryId
     );
+  }
+
+  function edit(card){
+    pickedCard = card
+    openEdit.set(true);
   }
 
   async function deleteFlashcard(card) {
@@ -51,6 +60,12 @@
     } catch (error) {
       console.error(`Error deleting flashcard: ${error}`);
     }
+  }
+
+  function updateFlashcardStore(updatedFlashcard:any){
+    flashcardStore.update(flashcards => {
+      return flashcards.map(card => card.id === updatedFlashcard.id ? {...card, ...updatedFlashcard} : card);
+    })
   }
 
   function formatTime(time: string) {
@@ -91,9 +106,13 @@
     <p class="font-semibold">Question: {card.question}</p>
     <p class="font-semibold">Answer: {card.answer}</p>
     <div class="flex justify-center mt-2">
-      <Button type="button" size="xs" color="alternative">Edit</Button>
+      <Button type="button" size="xs" color="alternative" on:click={() => {edit(card)}}>Edit</Button>
       <Button type="button" size="xs" color="red" class="ml-2" on:click={() => deleteFlashcard(card)}>Delete</Button>
     </div>
   </div>
   {/each}
 </div>
+
+{#if $openEdit}
+<ActiveEdit {pickedCard} {openEdit} on:saveCard={updateFlashcardStore}/>
+{/if}

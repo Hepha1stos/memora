@@ -8,7 +8,8 @@ export async function PATCH({request,locals}:RequestEvent){
 
   try{
     const data = await request.json();
-    const updatedFlashcard = await db.update(flashcard).set(data.flashcard).where(and(eq(flashcard.user_id, locals.user.id), eq(flashcard.id, data.id))).returning()
+    console.log(data)
+    const updatedFlashcard = await db.update(flashcard).set({answer: data.answer, question:data.question}).where(and(eq(flashcard.user_id, locals.user.id), eq(flashcard.id, data.id))).returning()
 
     return json({error:false, message:"Flashcard updated", data:updatedFlashcard})
   } catch(error){
