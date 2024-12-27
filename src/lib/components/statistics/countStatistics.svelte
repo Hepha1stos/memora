@@ -17,7 +17,7 @@
 	$: flashLen = $flashcardStore.length;
 </script>
 
-<div class="h-full flex flex-col justify-between items-center space-y-4">
+<div class="h-full w-full flex flex-col justify-between items-center space-y-4">
   <div class="flex space-x-14">
     <div class="flex-1">
       <Heading tag="h4" class="text-center text-lg font-semibold mb-4">Categories</Heading>
