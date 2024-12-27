@@ -1,20 +1,31 @@
 <script lang="ts">
 	import { Button, Heading, Input } from 'flowbite-svelte';
 	import Linechart from '../charts/linechart.svelte';
-	export let openStatistics: boolean;
-
+  import { flashcardStore } from '$lib/stores/flashcardStore';
 	import { categoryStore } from '$lib/stores/categoryStore';
 
+
+	export let openStatistics: boolean;
+  
+
+
 	let categories;
+  let flashcards;
 	let pickedCategoryId: number;
 	let pickedCategory: [];
 	let xAxis = [];
 	let yAxis = [];
-  let yAxis2 = [];
+	let yAxis2 = [];
+  let mostWrongAnswered
+
 
 	categoryStore.subscribe((value) => {
 		categories = value;
 	});
+
+  flashcardStore.subscribe((value) => {
+    flashcards = value;
+  })
 
 	async function loadLearnedSessions() {
 		const res = await fetch('/api/learnSession/get', {
@@ -24,7 +35,7 @@
 			}
 		});
 		const data = await res.json();
-    console.log(data)
+		console.log(data);
 		pickedCategory = data['data'].filter((obj) => obj.category_id === pickedCategoryId);
 		xAxis = pickedCategory.map((obj) =>
 			new Date(obj.date).toLocaleDateString('en-GB', {
@@ -35,11 +46,15 @@
 				minute: '2-digit'
 			})
 		);
-    yAxis2 = pickedCategory.map((obj) => obj.total_correct + obj.total_wrong);
-    console.log(yAxis2)
+		yAxis2 = pickedCategory.map((obj) => obj.total_correct + obj.total_wrong);
 		yAxis = pickedCategory.map((obj) => obj.total_correct);
-	
 	}
+
+  $: if (pickedCategory && pickedCategory.length > 0) {
+    mostWrongAnswered = flashcards
+        .filter((obj) => obj.category_id === pickedCategoryId)
+        .sort((a, b) => b.total_wrong - a.total_wrong)[0];
+}
 </script>
 
 <div class="fixed inset-0 z-50 flex w-full items-center justify-center bg-black bg-opacity-60">
@@ -56,7 +71,17 @@
 				<option value={c.id}>{c.name}</option>
 			{/each}
 		</select>
-		<Linechart {xAxis} {yAxis} {yAxis2} />
+    {#if !pickedCategory}
+      <p>No data available</p>
+    {:else}
+    <Linechart {xAxis} {yAxis} {yAxis2} />
+    <p>Repetitions:{pickedCategory.length}</p>
+    <div>
+      <p>Picked Category ID: {pickedCategoryId}</p>
+      <p>Picked Category Data: {JSON.stringify(mostWrongAnswered)}</p>
+  </div>
+    {/if}
+		
 		<Button
 			type="button"
 			color="alternative"

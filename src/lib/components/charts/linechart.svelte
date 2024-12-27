@@ -9,7 +9,7 @@
   $: options = {
   chart: {
     type: 'area',
-    height: '300px',
+    height: '350px',
     width: '100%',
     fontFamily: 'Inter, sans-serif',
     toolbar: {
@@ -86,6 +86,6 @@
 
 </script>
 
-<div class="w-full h-full">
+<div class="w-full h-max">
   <Chart {options} />
 </div>
