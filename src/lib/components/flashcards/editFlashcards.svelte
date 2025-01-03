@@ -94,17 +94,17 @@
 </select>
 
 <!-- Flashcards anzeigen -->
-<div class="relative text-center overflow-auto h-[32rem] border-2 rounded-lg mt-4 p-4">
+<div class="relative text-center overflow-auto h-[30rem] border-2 rounded-lg mt-4 p-4">
   {#if pickedCategoryId === 0}
-    <p class="text-gray-500">Please select a Category</p>
+    <p class="text-gray-500 ">Please select a Category</p>
   {:else if flashcardsToEdit.length <= 0}
     <p class="text-gray-500">This Category has no Flashcards</p>
   {/if}
 
   {#each flashcardsToEdit as card}
   <div class="mb-4 p-2 border rounded-lg shadow-sm hover:shadow-2xl duration-300 ease-in-out">
-    <p class="font-semibold">Question: {card.question}</p>
-    <p class="font-semibold">Answer: {card.answer}</p>
+    <span class="font-semibold">Question: <p class="font-normal">{card.question}</p></span>
+    <aside class="font-semibold ">Answer: </aside><p class="flashcard-answer">{card.answer}</p>
     <div class="flex justify-center mt-2">
       <Button type="button" size="xs" color="alternative" on:click={() => {edit(card)}}>Edit</Button>
       <Button type="button" size="xs" color="red" class="ml-2" on:click={() => deleteFlashcard(card)}>Delete</Button>
@@ -116,3 +116,10 @@
 {#if $openEdit}
 <ActiveEdit {pickedCard} {openEdit} on:saveCard={updateFlashcardStore}/>
 {/if}
+
+<style>
+  .flashcard-answer {
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+  }
+</style>

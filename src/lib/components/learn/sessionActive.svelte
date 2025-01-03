@@ -175,7 +175,9 @@ function shuffleAndSortFlashcards(flashcards) {
 		
 			{#if answer}
       <div
-			class="border-1 mt-2 flex h-1/3 w-full items-center justify-center rounded-lg bg-slate-100 text-center duration-300 ease-in-out hover:shadow-2xl"
+			class="border-1 mt-2 flex flex-col h-1/3 w-full rounded-lg bg-slate-100 text-center duration-300 ease-in-out hover:shadow-2xl flashcard-answer overflow-y-auto p-1"
+
+
 		>
 				<p>{flashcards[cardIndex].answer}</p>
       </div>
@@ -239,3 +241,10 @@ function shuffleAndSortFlashcards(flashcards) {
 		</div>
 	</div>
 {/if}
+
+<style>
+  .flashcard-answer {
+    white-space: pre-wrap; /* Zeilenumbrüche und Leerzeichen korrekt anzeigen */
+    word-wrap: break-word; /* Lange Wörter umbrechen */
+  }
+</style>

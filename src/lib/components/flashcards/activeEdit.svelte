@@ -1,71 +1,83 @@
 <script lang="ts">
 	import { flashcardStore } from '$lib/stores/flashcardStore';
-  import { Heading, Input, Button,Helper } from 'flowbite-svelte';
-  import type {Writable} from 'svelte/store';
-  flashcardStore
+	import { Heading, Button, Helper, Textarea,Input } from 'flowbite-svelte';
+	import type { Writable } from 'svelte/store';
 
+	// Props
+	export let pickedCard;
+	export let openEdit: Writable<boolean>;
 
-  export let pickedCard;
-  export let openEdit:Writable<boolean>;
+	// Lokale Variablen für die bearbeitete Frage und Antwort
+	let newQuestion = pickedCard?.question || '';
+	let newAnswer = pickedCard?.answer || '';
 
-    let newQuestion = pickedCard?.question || '';
-    let newAnswer = pickedCard?.answer || '';
+	// Funktion zum Schließen des Bearbeitungsdialogs
+	function closeEdit() {
+		openEdit.set(false);
+	}
 
-  function closeEdit(){
-    openEdit.set(false);
-  }
+	// Funktion zum Speichern der Änderungen
+	async function saveCard() {
+		try {
+			const body = {
+				id: pickedCard.id,
+				question: newQuestion,
+				answer: newAnswer
+			};
 
-async function saveCard(){
-  try{
-    let body = {
-      id:pickedCard.id,
-      question:newQuestion,
-      answer:newAnswer
-    }
-    console.log(body)
-    const response = await fetch("/api/flashcard/edit", {
-      method: 'PATCH',
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify(body)
-    });
-    const result = await response.json()
+			// API-Anfrage zum Aktualisieren der Flashcard
+			const response = await fetch('/api/flashcard/edit', {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			});
+			const result = await response.json();
 
-    flashcardStore.update(flashcards => {
-      const card = flashcards.find(card => card.id === pickedCard.id);
-      if (card){
-        card.question = newQuestion;
-        card.answer = newAnswer;
-      }
-      return flashcards;
-    })
-    openEdit.set(false);
-   
-  } catch(error){ 
-    console.log(error);
-  }
-}
+			// Lokale Store-Aktualisierung
+			flashcardStore.update((flashcards) => {
+				const card = flashcards.find((card) => card.id === pickedCard.id);
+				if (card) {
+					card.question = newQuestion;
+					card.answer = newAnswer;
+				}
+				return flashcards;
+			});
+			openEdit.set(false);
+		} catch (error) {
+			console.error('Error saving card:', error);
+		}
+	}
 </script>
 
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
 	<div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
 		<Heading tag="h4" class="mb-4">Edit Flashcard</Heading>
 		<p class="mb-4 text-gray-500">Modify your Flashcard details below.</p>
-    <Helper id="name-helper" class="mb-2">Question</Helper>
+
+		<!-- Eingabefeld für die Frage -->
+		<Helper id="question-helper" class="mb-2">Question</Helper>
 		<Input
-			type="text"
-			placeholder={pickedCard.question}
-      bind:value={newQuestion}
+      type="text"
+			bind:value={newQuestion}
+			placeholder="Enter your question"
+			id="question"
+			name="question"
 			class="mb-4 w-full"
 		/>
-    <Helper id="name-helper" class="mb-2">Answer</Helper>
-		<Input
-			type="text"
-			placeholder={pickedCard.answer}
-      bind:value={newAnswer}
-			class="mb-4 w-full"
+
+		<!-- Eingabefeld für die Antwort -->
+		<Helper id="answer-helper" class="mb-2">Answer</Helper>
+		<Textarea
+			bind:value={newAnswer}
+			placeholder="Enter your answer"
+			id="answer"
+			name="answer"
+			class="mb-4 w-full, h-[10rem]"
 		/>
+
+		<!-- Buttons -->
 		<Button type="button" class="w-full mb-2" on:click={saveCard}>Save</Button>
 		<Button type="button" class="w-full" on:click={closeEdit}>Close</Button>
 	</div>

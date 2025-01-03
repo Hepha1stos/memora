@@ -1,5 +1,5 @@
 // Importiere Drizzle-Module
-import { pgTable, varchar, serial, timestamp, integer, foreignKey,unique, jsonb } from 'drizzle-orm/pg-core';
+import { pgTable, varchar, serial, timestamp, integer, foreignKey,unique, jsonb,text } from 'drizzle-orm/pg-core';
 
 // PostgreSQL Schemas
 
@@ -41,8 +41,8 @@ export const category = pgTable("category", {
 // Flashcard Schema
 export const flashcard = pgTable("flashcard", {
   id: serial("id").primaryKey().notNull(),
-  question: varchar("question", { length: 255 }).notNull(),
-  answer: varchar("answer", { length: 255 }).notNull(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
   category_id: integer("category_id")
       .notNull()
       .references(() => category.id, { onDelete: "cascade" }), 
