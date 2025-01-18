@@ -24,7 +24,7 @@
   export let form: ActionData;
 </script>
 
-<div class="h-screen w-full flex justify-center items-center">
+<div class="h-screen w-full flex justify-center items-center bg-[#F0F0F2]">
   <form method="POST" action="?/login" class="flex flex-col bg-white p-9 rounded-lg shadow-lg">
     <Heading tag="h3" class="mb-4">Login</Heading>
     <div class="mb-4">

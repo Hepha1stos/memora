@@ -15,7 +15,7 @@
   };
 </script>
 
-<div class="flex h-screen w-full items-center justify-center bg-slate-200">
+<div class="flex h-screen w-full items-center justify-center bg-[#F0F0F2]">
 	<form
 		method="POST"
 		action="?/register"

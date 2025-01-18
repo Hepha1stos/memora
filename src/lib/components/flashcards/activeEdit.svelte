@@ -52,9 +52,9 @@
 </script>
 
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-	<div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
-		<Heading tag="h4" class="mb-4">Edit Flashcard</Heading>
-		<p class="mb-4 text-gray-500">Modify your Flashcard details below.</p>
+	<div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center text-center w-[35rem]">
+		<Heading tag="h4" class="mb-4 text-2xl">Edit Flashcard</Heading>
+		<p class="mb-4 text-gray-500 text-sm">Modify your Flashcard details below.</p>
 
 		<!-- Eingabefeld für die Frage -->
 		<Helper id="question-helper" class="mb-2">Question</Helper>
@@ -78,7 +78,7 @@
 		/>
 
 		<!-- Buttons -->
-		<Button type="button" class="w-full mb-2" on:click={saveCard}>Save</Button>
+		<Button type="button" class="w-full mb-2 bg-green-700 save hover:bg-green-800" on:click={saveCard}>Save</Button>
 		<Button type="button" class="w-full" on:click={closeEdit}>Close</Button>
 	</div>
 </div>

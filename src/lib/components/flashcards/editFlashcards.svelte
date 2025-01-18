@@ -1,7 +1,7 @@
 <script lang="ts">
   import { categoryStore } from "$lib/stores/categoryStore";
   import { flashcardStore } from "$lib/stores/flashcardStore";
-  import { get,writable } from "svelte/store";
+  import { get, writable } from "svelte/store";
   import { Button, Heading } from "flowbite-svelte";
 
   import ActiveEdit from "./activeEdit.svelte"
@@ -30,8 +30,8 @@
     );
   }
 
-  function edit(card){
-    pickedCard = card
+  function edit(card) {
+    pickedCard = card;
     openEdit.set(true);
   }
 
@@ -74,7 +74,7 @@
   }
 </script>
 
-<Heading tag="h4" class="text-center text-lg font-semibold mb-4">Edit Flashcards</Heading>
+<Heading tag="h4" class="text-center text-xl font-semibold mb-4">Edit Flashcards</Heading>
 
 <p class="mb-2 text-wrap text-sm text-gray-600 font-medium">
   Select a Category and click <i>Edit</i> to change the Questions/Answers of a Flashcard or
@@ -84,42 +84,51 @@
 <!-- Kategorien-Auswahl -->
 <select
   id="categories"
-  class="focus:border-teal block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none"
+  class="focus:border-teal-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none"
   bind:value={pickedCategoryId}
 >
   <option value="0" selected>Select a Category</option>
   {#each categories as c}
-    <option value={c.id}>{c.name}</option>
+    <option class="bg-white" value={c.id}>{c.name}</option>
   {/each}
 </select>
 
 <!-- Flashcards anzeigen -->
-<div class="relative text-center overflow-auto h-[30rem] border-2 rounded-lg mt-4 p-4">
+<div class="relative text-center overflow-auto h-[33rem] border-1 rounded-lg mt-2 p-2">
   {#if pickedCategoryId === 0}
-    <p class="text-gray-500 ">Please select a Category</p>
+    <p class="text-gray-500">Please select a Category</p>
   {:else if flashcardsToEdit.length <= 0}
     <p class="text-gray-500">This Category has no Flashcards</p>
   {/if}
 
   {#each flashcardsToEdit as card}
-  <div class="mb-4 p-2 border rounded-lg shadow-sm hover:shadow-2xl duration-300 ease-in-out">
-    <span class="font-semibold">Question: <p class="font-normal">{card.question}</p></span>
-    <aside class="font-semibold ">Answer: </aside><p class="flashcard-answer">{card.answer}</p>
-    <div class="flex justify-center mt-2">
-      <Button type="button" size="xs" color="alternative" on:click={() => {edit(card)}}>Edit</Button>
-      <Button type="button" size="xs" color="red" class="ml-2" on:click={() => deleteFlashcard(card)}>Delete</Button>
+  <div class="mb-4 p-4  border border-gray-200 rounded-2xl shadow custom-hover-shadow transition-shadow duration-200 ease-in-out w-full">
+    <span class="block font-semibold text-lg text-gray-800">Question:</span>
+    <p class="mb-2 p-2 border-solid border-2 font-normal text-gray-600 bg-gray-50 rounded-md flashcard-content">{card.question}</p>
+    <span class="block font-semibold text-lg text-gray-800">Answer:</span>
+    <p class="p-2 font-normal border-solid border-2 text-gray-600 bg-gray-50 rounded-md flashcard-content">{card.answer}</p>
+    <div class="flex justify-center gap-2 mt-4">
+      <Button type="button" size="sm" color="alternative" on:click={() => { edit(card) }}>Edit</Button>
+      <Button type="button" size="sm" color="red" on:click={() => deleteFlashcard(card)}>Delete</Button>
     </div>
-  </div>
+</div>
   {/each}
 </div>
 
 {#if $openEdit}
-<ActiveEdit {pickedCard} {openEdit} on:saveCard={updateFlashcardStore}/>
+<ActiveEdit {pickedCard} {openEdit} on:saveCard={updateFlashcardStore} />
 {/if}
 
 <style>
-  .flashcard-answer {
-    white-space: pre-wrap; 
-    word-wrap: break-word; 
+  .flashcard-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: start;
   }
+
+  
+.custom-hover-shadow:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 20px 40px -5px rgba(0, 0, 0, 0.25);
+}
+
 </style>
