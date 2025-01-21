@@ -76,16 +76,16 @@
 
 </script>
 
-<Heading tag="h4" class="text-center text-lg font-semibold mb-4">Edit Category</Heading>
-<p class="text-gray-600 text-sm mb-6 text-wrap text-sm font-medium">
+<Heading tag="h4" class="text-center text-2xl font-semibold mb-4 text-primary-600">Edit Category</Heading>
+<p class="text-black mb-6 text-wrap text-black text-base font-medium">
 	Click <i>Edit</i> to change the Name of a Category or <i>Delete</i> to delete a Category and its Flashcards.
 </p>
 
 <div class="relative text-center overflow-auto h-[34rem] border-2 rounded-lg mt-4 p-4">
 	{#each categories as cat}
-	<div class="mb-4 p-2 border rounded-lg shadow-sm hover:shadow-2xl duration-300 ease-in-out">
-		<p class="font-semibold">{cat.name}</p>
-		<p class="text-gray-600 text-sm">Flashcards: {flashcards.filter(f => f.category_id === cat.id).length}</p>
+	<div class="mb-4 p-2 border rounded-lg border border-gray-300 bg-gray-100 shadow-sm hover:shadow-2xl duration-200 ease-in-out">
+		<p class="font-semibold text-black">{cat.name}</p>
+		<p class="text-back text-sm">Flashcards: {flashcards.filter(f => f.category_id === cat.id).length}</p>
 		<div class="mt-2 flex justify-center gap-2">
 			<Button
 				type="button"

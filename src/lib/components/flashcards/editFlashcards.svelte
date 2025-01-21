@@ -74,9 +74,9 @@
   }
 </script>
 
-<Heading tag="h4" class="text-center text-xl font-semibold mb-4">Edit Flashcards</Heading>
+<Heading tag="h4" class="text-center text-2xl font-semibold mb-4 text-primary-600">Edit Flashcards</Heading>
 
-<p class="mb-2 text-wrap text-sm text-gray-600 font-medium">
+<p class="mb-2 text-wrap text-base text-black font-medium">
   Select a Category and click <i>Edit</i> to change the Questions/Answers of a Flashcard or
   <i>Delete</i> to delete a Flashcard.
 </p>
@@ -87,7 +87,7 @@
   class="focus:border-teal-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:outline-none"
   bind:value={pickedCategoryId}
 >
-  <option value="0" selected>Select a Category</option>
+ 
   {#each categories as c}
     <option class="bg-white" value={c.id}>{c.name}</option>
   {/each}
@@ -102,11 +102,11 @@
   {/if}
 
   {#each flashcardsToEdit as card}
-  <div class="mb-4 p-4  border border-gray-200 rounded-2xl shadow custom-hover-shadow transition-shadow duration-200 ease-in-out w-full">
+  <div class="mb-4 p-4  border border-gray-300 bg-gray-100 rounded-2xl shadow custom-hover-shadow transition-shadow duration-200 ease-in-out w-full">
     <span class="block font-semibold text-lg text-gray-800">Question:</span>
-    <p class="mb-2 p-2 border-solid border-2 font-normal text-gray-600 bg-gray-50 rounded-md flashcard-content">{card.question}</p>
+    <p class="mb-2 p-2 border-solid border-2 font-normal bg-[#FFFFFF] rounded-md flashcard-content">{card.question}</p>
     <span class="block font-semibold text-lg text-gray-800">Answer:</span>
-    <p class="p-2 font-normal border-solid border-2 text-gray-600 bg-gray-50 rounded-md flashcard-content">{card.answer}</p>
+    <p class="p-2 font-normal border-solid border-2 bg-[#FFFFFF] rounded-md flashcard-content">{card.answer}</p>
     <div class="flex justify-center gap-2 mt-4">
       <Button type="button" size="sm" color="alternative" on:click={() => { edit(card) }}>Edit</Button>
       <Button type="button" size="sm" color="red" on:click={() => deleteFlashcard(card)}>Delete</Button>

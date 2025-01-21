@@ -42,10 +42,10 @@
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 w-full">
 	<div class="flex h-[45rem] w-1/2 flex-col items-center rounded-lg bg-white p-8 shadow-lg">
 		{#if start}
-			<Heading tag="h4" class="mb-1 text-center text-lg w-full font-semibold">Learn Session</Heading>
+			<Heading tag="h4" class="mb-1 text-center text-2xl w-full font-semibold text-primary-600">Learn Session</Heading>
 			<SessionActive {pickedCategoryId} {isSessionOpen}/>
 		{:else}
-			<Heading tag="h4" class="mb-1 text-center text-lg font-semibold">Learning Session</Heading>
+			<Heading tag="h4" class="mb-1 text-center text-2xl font-semibold text-primary-600">Learn Session</Heading>
 			<form class="w-full text-center">
 				Choose a Category and click "Start" <br /><br />
 				<select

@@ -67,9 +67,9 @@
   }
 </script>
 
-<Heading tag="h4" class="text-center text-lg font-semibold mb-4">Create a new Category</Heading>
+<Heading tag="h4" class="text-center text-2xl font-semibold mb-4 text-primary-600">Create a new Category</Heading>
 
-<p class="text-gray-600 text-sm mb-6 text-wrap text-sm font-medium">
+<p class=" mb-6 text-wrap text-black text-base font-medium">
   Organize your Flashcards better by creating a new category!
 </p>
 

@@ -57,17 +57,15 @@
 
 <div class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
 	<div class="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
-		<Heading tag="h4" class="mb-4">Edit Category</Heading>
-		<p class="mb-4 text-gray-500">Modify your category details below.</p>
-		<p>Number: {pickedCategory.id}</p>
-		<p>Oldname: {pickedCategory.name}</p>
+		<Heading tag="h4" class="mb-4 text-primary-600 text-center">Edit Category</Heading>
+		<p class="mb-4 text-gray-500 text-black-400 font-medium text-base">Modify your category details below.</p>
 		<Input
 			type="text"
 			placeholder="Enter new category name"
 			bind:value={newName}
 			class="mb-4 w-full"
 		/>
-		<Button type="button" class="w-full mb-2" on:click={updateCategory}>Save</Button>
-		<Button type="button" class="w-full" on:click={() => openEdit.set(false)}>Close</Button>
+		<Button type="button" class="w-full mb-2 bg-green-700 save hover:bg-green-800" on:click={updateCategory}>Save</Button>
+		<Button type="button" class="w-full" on:click={() => openEdit.set(false)}>Cancel</Button>
 	</div>
 </div>
